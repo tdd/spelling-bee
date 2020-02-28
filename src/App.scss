@@ -1,0 +1,143 @@
+// Theme
+
+$color-consonnant: blue;
+$bg-consonnant: lighten($color-consonnant, 40%);
+
+$bg-speaking: #ff9;
+$bg-letter-speaking: darken($bg-speaking, 10%);
+
+$color-vowel: #f64;
+$bg-vowel: lighten($color-vowel, 30%);
+
+$color-regular: black;
+$bg-regular: #ddd;
+$bg-active: white;
+$color-disabled: gray;
+
+/* General */
+
+.app {
+  font-family: Alamain, cursive;
+  font-size: 32px;
+  margin: 1em 2em;
+  text-align: center;
+
+  &.useLowerCase {
+    input,
+    .text,
+    .letters button {
+      text-transform: lowercase;
+    }
+  }
+  &.useUpperCase {
+    input,
+    .text,
+    .letters button {
+      text-transform: uppercase;
+    }
+  }
+
+  button:focus {
+    outline: 0.1em dotted $color-disabled;
+  }
+}
+
+/* Controls */
+
+.letters button,
+.controls button {
+  width: 2em;
+  height: 2em;
+  margin: 0.5em;
+  border-radius: 0.5em;
+  border-width: 0.1em;
+  border-color: $color-regular;
+  font-size: 2rem;
+}
+
+.controls button {
+  &.toggle {
+    background: $bg-regular;
+    color: $color-regular;
+    border-color: $color-regular;
+    min-width: 2em;
+    width: auto;
+  }
+  &:active {
+    background: $bg-active;
+  }
+}
+
+/* Text input area */
+
+.input input {
+  font-size: inherit;
+  border: 0.1em solid $color-disabled;
+  color: $color-disabled;
+  padding: 0 0.2em;
+  border-radius: 0.3em;
+  min-width: 27ex;
+}
+
+/* Text display */
+
+.text {
+  font-size: 2em;
+  &.speaking {
+    background: $bg-speaking;
+  }
+  span.speaking {
+    // background: radial-gradient(
+    //   circle closest-side at center,
+    //   $bg-letter-speaking,
+    //   $bg-letter-speaking 100%,
+    //   transparent
+    // );
+    text-decoration: underline;
+  }
+  &.apart {
+    letter-spacing: 0.2em;
+  }
+  .consonnant {
+    color: $color-consonnant;
+  }
+  .vowel {
+    color: $color-vowel;
+  }
+}
+
+/* Letters “keyboard” */
+
+.letters {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+
+  button {
+    font-family: inherit;
+    width: 3em;
+    height: 3em;
+    line-height: 3em;
+    border-style: solid;
+
+    &.vowel:not(:disabled) {
+      color: $color-vowel;
+      border-color: $color-vowel;
+      background: $bg-vowel;
+    }
+    &.consonnant:not(:disabled) {
+      color: $color-consonnant;
+      border-color: $color-consonnant;
+      background: $bg-consonnant;
+    }
+    &.speaking {
+      background: $bg-speaking !important;
+    }
+
+    &:disabled {
+      background: $bg-regular;
+      color: $color-disabled;
+      border-color: $color-disabled;
+    }
+  }
+}
