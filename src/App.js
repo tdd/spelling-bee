@@ -12,23 +12,29 @@ const VOWELS = 'aeiouy'
 function App() {
   const [word, setWord] = useState('maxence')
   const normalizedWord = stripDiacritics(word)
+  // UI flags
   const [apart, setApart] = useState(false)
-  const [speaking, setSpeaking] = useState(null)
   const [upperCase, setUpperCase] = useState(false)
   const [showAll, setShowAll] = useState(true)
+  // Ephemeral states
+  const [speaking, setSpeaking] = useState(null)
+  const [typing, setTyping] = useState(false)
 
   function defineWord(word) {
     setWord(word.toLowerCase())
-    speakText(word)
+    speakText(word, { rate: 1 })
   }
 
   function pickWord() {
     const newWord = pickRandomWord()
     setWord(newWord)
-    speakText(newWord)
+    speakText(newWord, { rate: 1 })
   }
 
   function speakText(text, { rate } = {}) {
+    if (typing) {
+      return
+    }
     speak(text, {
       onEnd() {
         setSpeaking(null)
@@ -72,7 +78,12 @@ function App() {
         </button>
       </div>
       <div className="input">
-        <input onChange={(e) => defineWord(e.target.value)} value={word} />
+        <input
+          onBlur={() => setTyping(false)}
+          onChange={(e) => defineWord(e.target.value)}
+          onFocus={() => setTyping(true)}
+          value={word}
+        />
       </div>
 
       <div
@@ -116,7 +127,7 @@ function App() {
 }
 
 function isVowel(letter) {
-  return VOWELS.includes(letter)
+  return VOWELS.includes(stripDiacritics(letter))
 }
 
 export default App
