@@ -1,8 +1,13 @@
 const MIN_LISTENING_CONFIDENCE = 0.75
 
+const SRConstructor = window.SpeechRecognition || window.webkitSpeechRecognition
+
+export function hasSpeechRecognition() {
+  return SRConstructor != null
+}
+
 export function listenForWord(onWord) {
-  const reco = new (window.SpeechRecognition ||
-    window.webkitSpeechRecognition)()
+  const reco = new SRConstructor()
   reco.lang = 'fr-FR'
   reco.interimResults = true
   reco.onresult = function handleSpeechResult({ results }) {

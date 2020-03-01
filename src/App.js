@@ -1,7 +1,7 @@
 import './App.scss'
 
 import React, { useState } from 'react'
-import { listenForWord, speak } from './speech'
+import { hasSpeechRecognition, listenForWord, speak } from './speech'
 import { pickRandomWord, stripDiacritics } from './words'
 
 import classnames from 'classnames'
@@ -15,6 +15,7 @@ function App() {
   const [apart, setApart] = useState(false)
   const [speaking, setSpeaking] = useState(null)
   const [upperCase, setUpperCase] = useState(false)
+  const [showAll, setShowAll] = useState(true)
 
   function defineWord(word) {
     setWord(word.toLowerCase())
@@ -49,17 +50,25 @@ function App() {
             🎱
           </span>
         </button>
-        <button onClick={() => listenForWord(defineWord)}>
-          <span role="img" aria-label="Saisie vocale">
-            🎤
-          </span>
-        </button>
+        {hasSpeechRecognition() && (
+          <button onClick={() => listenForWord(defineWord)}>
+            <span role="img" aria-label="Saisie vocale">
+              🎤
+            </span>
+          </button>
+        )}
         <button onClick={() => speakText(word, { rate: 1 })}>🗣</button>
         <button className="toggle" onClick={() => setUpperCase(!upperCase)}>
           {upperCase ? 'a' : 'A'}
         </button>
         <button className="toggle" onClick={() => setApart(!apart)}>
           {apart ? '⇢⇠' : '⇠⇢'}
+        </button>
+        <button
+          className="toggle trackCase"
+          onClick={() => setShowAll(!showAll)}
+        >
+          {showAll ? 'a, b' : 'a…z'}
         </button>
       </div>
       <div className="input">
@@ -84,18 +93,23 @@ function App() {
         ))}
       </div>
       <div className="letters">
-        {ALPHABET.map((letter) => (
-          <button
-            className={classnames(isVowel(letter) ? 'vowel' : 'consonnant', {
-              speaking: speaking === letter,
-            })}
-            disabled={!normalizedWord.includes(letter)}
-            key={letter}
-            onClick={() => speakText(letter)}
-          >
-            {letter}
-          </button>
-        ))}
+        {ALPHABET.map((letter) => {
+          if (!showAll && !normalizedWord.includes(letter)) {
+            return null
+          }
+          return (
+            <button
+              className={classnames(isVowel(letter) ? 'vowel' : 'consonnant', {
+                speaking: speaking === letter,
+              })}
+              disabled={!normalizedWord.includes(letter)}
+              key={letter}
+              onClick={() => speakText(letter)}
+            >
+              {letter}
+            </button>
+          )
+        })}
       </div>
     </div>
   )

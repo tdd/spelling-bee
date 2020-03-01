@@ -14,6 +14,13 @@ $bg-regular: #ddd;
 $bg-active: white;
 $color-disabled: gray;
 
+/* Fonts */
+
+@font-face {
+  font-family: Alamain;
+  src: url('./alamain.ttf') format('truetype');
+}
+
 /* General */
 
 .app {
@@ -25,16 +32,23 @@ $color-disabled: gray;
   &.useLowerCase {
     input,
     .text,
-    .letters button {
+    .letters button,
+    .trackCase {
       text-transform: lowercase;
     }
   }
   &.useUpperCase {
     input,
     .text,
-    .letters button {
+    .letters button,
+    .trackCase {
       text-transform: uppercase;
     }
+  }
+
+  button {
+    border-width: 0.1em;
+    border-style: solid;
   }
 
   button:focus {
@@ -50,7 +64,6 @@ $color-disabled: gray;
   height: 2em;
   margin: 0.5em;
   border-radius: 0.5em;
-  border-width: 0.1em;
   border-color: $color-regular;
   font-size: 2rem;
 }
@@ -118,7 +131,6 @@ $color-disabled: gray;
     width: 3em;
     height: 3em;
     line-height: 3em;
-    border-style: solid;
 
     &.vowel:not(:disabled) {
       color: $color-vowel;
